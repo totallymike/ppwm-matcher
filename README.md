@@ -6,11 +6,13 @@ A sinatra app with github auth for Avdi
 
 ## TODO
 
-* add codes
-* persist code
-* surface user emails
-* use session data
-* fix deprecation warnings
+* a way to add codes
+* persist codes, persist matched users
+* link to user emails
+* store data in the session
+* fix deprecation warnings from github auth
+* don't let codes be re-used by other users
+* analytics?
 
 ## Setup
 
