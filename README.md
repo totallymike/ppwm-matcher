@@ -2,6 +2,8 @@
 
 A sinatra app with github auth for Avdi
 
+* see [ppwm](https://github.com/avdi/ppwm), [a ppwm scraper](https://github.com/martyhines/pair_with_me), and [rubypair](https://github.com/rubypair/rubypair)
+
 ## TODO
 
 * add codes
