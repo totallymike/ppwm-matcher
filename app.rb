@@ -54,6 +54,8 @@ PAIR
     post '/code' do
       authenticate!
       code = params['code']
+      #TODO don't over-write any already posted codes willy-nilly
+      # check if this is the same user using the same code twice
       MATCHED_PAIRS[code] = "#{github_user.login}, #{github_user.email}"
       pair = MATCHED_PAIRS.fetch(CODES.find_match(code), UNPAIRED)
       if pair == UNPAIRED
