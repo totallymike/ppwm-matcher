@@ -1,4 +1,6 @@
 ENV['RACK_ENV'] ||= 'development'
+# per https://devcenter.heroku.com/articles/ruby#logging
+$stdout.sync = true
 require "rubygems"
 require "bundler/setup"
 require './app'

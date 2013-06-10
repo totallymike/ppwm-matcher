@@ -1,3 +1,4 @@
+require 'logger'
 require 'sinatra'
 require 'sinatra_auth_github'
 
@@ -30,6 +31,7 @@ module PpwmMatcher
       :secret    => ENV['GITHUB_CLIENT_SECRET'],
       :client_id => ENV['GITHUB_CLIENT_ID'],
     }
+    LOGGER = Logger.new(STDOUT)
 
     register Sinatra::Auth::Github
 
@@ -56,7 +58,9 @@ PAIR
       code = params['code']
       #TODO don't over-write any already posted codes willy-nilly
       # check if this is the same user using the same code twice
-      MATCHED_PAIRS[code] = "#{github_user.login}, #{github_user.email}"
+      user_info = "#{github_user.login}, #{github_user.email}"
+      MATCHED_PAIRS[code] = user_info
+      LOGGER.info "Matched #{user_info} to #{code}"
       pair = MATCHED_PAIRS.fetch(CODES.find_match(code), UNPAIRED)
       if pair == UNPAIRED
         message = "Your pair hasn't signed in yet, keep your fingers crossed!"
