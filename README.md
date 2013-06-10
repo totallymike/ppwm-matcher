@@ -24,3 +24,6 @@ A sinatra app with github auth for Avdi
   heroku config:set GITHUB_CLIENT_ID="<from GH>" GITHUB_CLIENT_SECRET="<from GH>"
   ```
 
+## License
+
+Ask Avdi
