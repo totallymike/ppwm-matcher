@@ -16,6 +16,7 @@ A sinatra app with github auth for Avdi
   bundle
   heroku addons:add heroku-postgresql:dev
   # create a new github application https://github.com/account/applications
+  # your callback url should be hostname + /auth/github/callback
   heroku config:set GITHUB_CLIENT_ID="<from GH>" GITHUB_CLIENT_SECRET="<from GH>"
   ```
 
