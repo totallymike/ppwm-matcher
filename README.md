@@ -25,7 +25,7 @@ So that hackers will be happier<br/>
     Your pair hasn't signed in yet. Keep your fingers crossed!"
     
 *When* the second recipient, Bob, follows the directions on his card<br/>
-*Then* they are told:
+*Then* he is told:
 
     You've been matched with Jane! Click here to email her!
     
