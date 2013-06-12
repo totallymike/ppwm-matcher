@@ -1,31 +1,35 @@
-class Code < ActiveRecord::Base
-  attr_accessible :value, :paired_code_id
+module PpwmMatcher
+  class Code < ActiveRecord::Base
+    self.table_name_prefix = "ppwm_matcher_"
 
-  belongs_to :paired_code, :class_name => "Code", :foreign_key => "paired_code_id"
-  has_one :user
+    attr_accessible :value, :paired_code_id
 
-  # Create two codes and link them as pairs.
-  def self.create_pair
-    first  = Code.create!(:value => generate_string)
+    belongs_to :paired_code, :class_name => "Code", :foreign_key => "paired_code_id"
+    has_one :user
 
-    second = Code.create!(:value => generate_string,
-                          :paired_code_id => first.id)
+    # Create two codes and link them as pairs.
+    def self.create_pair
+      first  = Code.create!(:value => generate_string)
 
-    first.update_attribute(:paired_code_id, second.id)
+      second = Code.create!(:value => generate_string,
+                            :paired_code_id => first.id)
 
-    [first, second]
-  end
+      first.update_attribute(:paired_code_id, second.id)
 
-  # Generate a random 6 character code.
-  def self.generate_string
-    (0...6).map{(65+rand(26)).chr}.join
-  end
+      [first, second]
+    end
 
-  def pair_claimed?
-    !!paired_user
-  end
+    # Generate a random 6 character code.
+    def self.generate_string
+      (0...6).map{(65+rand(26)).chr}.join
+    end
 
-  def paired_user
-    paired_code.user
+    def pair_claimed?
+      !!paired_user
+    end
+
+    def paired_user
+      paired_code.user
+    end
   end
 end
