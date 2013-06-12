@@ -34,24 +34,35 @@ Install the gems:
 bundle
 ```
 
-Then set the application settings as environment variables:
+Then set up your the application config and database settings
 
 ```bash
-export GITHUB_CLIENT_ID="<from GH>"
-export GITHUB_CLIENT_SECRET="<from GH>"
+./serve.sh setup`
 ```
+
+Update the GITHUB keys in your `config/application.yml`
+
 
 Finally start the web server using thin:
 
 ```bash
-bundle exec thin start  # start the server on 0.0.0.0:3000
+./serve.sh start
 ```
 
-### Deploying to heroku
+If you want to daemonize your dev server
+
+```bash
+./serve.sh start -d
+./serve.sh stop
+```
+
+### Deploying to heroku (production)
 
   ```bash
   heroku addons:add heroku-postgresql:dev
   heroku config:set GITHUB_CLIENT_ID="<from GH>" GITHUB_CLIENT_SECRET="<from GH>"
+  git push heroku master
+  heroku run rake db:migrate
   ```
 
 ## License
