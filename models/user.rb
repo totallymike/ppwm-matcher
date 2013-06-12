@@ -14,9 +14,5 @@ module PpwmMatcher
 
       User.where(:code_id => self.code_id).detect{|u| u != self }
     end
-
-    def update_with_code(code)
-      update_attribute(:code_id, code.id)
-    end
   end
 end

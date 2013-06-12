@@ -52,15 +52,15 @@ PAIR
       user = User.where(:email => params['email']).first_or_create
       code = Code.where(:code  => params['code']).first
 
+      code.assign_user user
+
       # Unknown code? Try again
       redirect '/?error=1' unless code
 
       LOGGER.info "Matched #{user.email} to #{code.value}"
 
-      user.update_with_code(code)
-
-      if code.pair_claimed?
-        message = "Your pair is #{code.paired_user.email}! Click here to send an email and set up a pairing session! Don't be shy!"
+      if user.has_pair?
+        message = "Your pair is #{user.pair.email}! Click here to send an email and set up a pairing session! Don't be shy!"
       else
         message = "Your pair hasn't signed in yet, keep your fingers crossed!"
       end
