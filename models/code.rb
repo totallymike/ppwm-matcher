@@ -2,10 +2,9 @@ module PpwmMatcher
   class Code < ActiveRecord::Base
     self.table_name_prefix = "ppwm_matcher_"
 
-    attr_accessible :value, :paired_code_id
-
-    belongs_to :paired_code, :class_name => "Code", :foreign_key => "paired_code_id"
     has_many :users
+
+    before_create :ensure_value
 
     # Create two codes and link them as pairs.
     def self.create_pair
@@ -19,8 +18,12 @@ module PpwmMatcher
       [first, second]
     end
 
+    def ensure_value
+      self.value ||= generate_string
+    end
+
     # Generate a random 6 character code.
-    def self.generate_string
+    def generate_string
       (0...6).map{(65+rand(26)).chr}.join
     end
 
