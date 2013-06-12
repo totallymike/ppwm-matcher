@@ -26,9 +26,11 @@ module PpwmMatcher
 
     get '/' do
       authenticate!
+      message = params['error'] ? "<strong>Unknown code, try again</strong>" : ""
       <<-PAIR
-Hello there, #{github_user.login}!
-Enter your code:
+<h1>Hello there, #{github_user.login}!</h1>
+#{message}
+<p>Enter your code:</p>
 <form action='/code' method='POST'>
   <input type='text' name='code' value=''>
   <input type='submit'>
@@ -43,8 +45,14 @@ PAIR
 
     post '/code' do
       authenticate!
+
+      # Store the user, check code
       user = User.find_or_create_by_email(github_user.email)
       code = Code.find_by_value(params['code'])
+
+      # Unknown code? Try again
+      redirect '/?error=1' unless code
+
       LOGGER.info "Matched #{user.email} to #{code.value}"
 
       user.update_with_code(code)
