@@ -38,4 +38,14 @@ describe PpwmMatcher::Code do
       expect(codes.uniq).to have_exactly(10).items
     end
   end
+
+  describe "allows no more than two users" do
+    it "should raise an error when more than two users are associated" do
+      code.users << FactoryGirl.create(:user)
+      code.users << FactoryGirl.create(:user)
+      code.users << FactoryGirl.create(:user)
+
+      expect(code).not_to be_valid
+    end
+  end
 end

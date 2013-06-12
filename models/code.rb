@@ -6,6 +6,14 @@ module PpwmMatcher
 
     before_create :ensure_value
 
+    validate :cannot_have_more_than_two_users
+
+    def cannot_have_more_than_two_users
+      if users(true).length > 2
+        errors.add(:users, "can't have more than 2 users")
+      end
+    end
+
     def ensure_value
       self.value ||= generate_string
     end
