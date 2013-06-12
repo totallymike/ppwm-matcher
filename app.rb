@@ -47,9 +47,10 @@ PAIR
 
     post '/code' do
       authenticate!
+
       # Store the user, check code
-      user = User.find_or_create_by_email(params['email'])
-      code = Code.find_by_value(params['code'])
+      user = User.where(:email => params['email']).first_or_create
+      code = Code.where(:code  => params['code']).first
 
       # Unknown code? Try again
       redirect '/?error=1' unless code
