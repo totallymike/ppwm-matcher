@@ -5,7 +5,7 @@ module PpwmMatcher
     attr_accessible :value, :paired_code_id
 
     belongs_to :paired_code, :class_name => "Code", :foreign_key => "paired_code_id"
-    has_one :user
+    has_many :users
 
     # Create two codes and link them as pairs.
     def self.create_pair

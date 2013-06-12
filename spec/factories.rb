@@ -8,5 +8,19 @@ FactoryGirl.define do
 
   factory :code, :class => PpwmMatcher::Code do
     value { generate(:random_code) }
+
+    factory :code_with_users do
+      ignore do
+        users_count 2
+      end
+
+      after(:create) do |code, evaluator|
+        FactoryGirl.create_list(:user, evaluator.users_count, code: code)
+      end
+    end
+  end
+
+  factory :user, :class => PpwmMatcher::User do
+    email { Faker::Internet.email }
   end
 end
