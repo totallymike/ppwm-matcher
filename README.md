@@ -48,7 +48,7 @@ bundle
 Then set up your the application config and database settings
 
 ```bash
-./serve.sh setup`
+./serve.sh setup
 ```
 
 Update the GITHUB keys in your `config/application.yml`
