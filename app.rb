@@ -71,24 +71,5 @@ You submitted code #{code.value}<br>
 PAIR
     end
 
-    get '/orgs/:id' do
-      github_organization_authenticate!(params['id'])
-      "Hello There, #{github_user.name}! You have access to the #{params['id']} organization."
-    end
-
-    get '/publicized_orgs/:id' do
-      github_publicized_organization_authenticate!(params['id'])
-      "Hello There, #{github_user.name}! You are publicly a member of the #{params['id']} organization."
-    end
-
-    get '/teams/:id' do
-      github_team_authenticate!(params['id'])
-      "Hello There, #{github_user.name}! You have access to the #{params['id']} team."
-    end
-
-    get '/logout' do
-      logout!
-      redirect 'https://github.com'
-    end
   end
 end
