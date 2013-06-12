@@ -55,6 +55,11 @@ Enter your code:
 PAIR
     end
 
+    get '/code/create' do
+      codes = Code.create_pair
+      codes.map { |c| [c.id, c.value] }.inspect
+    end
+
     post '/code' do
       authenticate!
       code = params['code']
