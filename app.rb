@@ -3,29 +3,10 @@ require 'sinatra'
 require 'sinatra_auth_github'
 require 'sinatra/activerecord'
 require './models/code'
+require './models/user'
 
 module PpwmMatcher
   class App < Sinatra::Base
-    Pair = Struct.new(:code1,:code2) do
-      def match(code)
-        (code1 == code && code2) ||
-          (code2 == code && code1)
-      end
-    end
-    Pairs = Struct.new(:pairs) do
-      def find_match(code)
-        pairs.each do |pair|
-          match = pair.match(code)
-          return match unless match.nil?
-        end
-        'none'
-      end
-    end
-    CODES = Pairs.new([
-    Pair.new('foo','bar')
-  ])
-    UNPAIRED = Class.new
-    MATCHED_PAIRS = {}
     enable :sessions
 
     set :github_options, {
@@ -45,9 +26,11 @@ module PpwmMatcher
 
     get '/' do
       authenticate!
+      message = params['error'] ? "<strong>Unknown code, try again</strong>" : ""
       <<-PAIR
-Hello there, #{github_user.login}!
-Enter your code:
+<h1>Hello there, #{github_user.login}!</h1>
+#{message}
+<p>Enter your code:</p>
 <form action='/code' method='POST'>
   <input type='text' name='code' value=''>
   <input type='submit'>
@@ -55,22 +38,33 @@ Enter your code:
 PAIR
     end
 
+    get '/code/create' do
+      codes = Code.create_pair
+      codes.map { |c| [c.id, c.value] }.inspect
+    end
+
     post '/code' do
       authenticate!
-      code = params['code']
-      #TODO don't over-write any already posted codes willy-nilly
-      # check if this is the same user using the same code twice
-      user_info = "#{github_user.login}, #{github_user.email}"
-      MATCHED_PAIRS[code] = user_info
-      LOGGER.info "Matched #{user_info} to #{code}"
-      pair = MATCHED_PAIRS.fetch(CODES.find_match(code), UNPAIRED)
-      if pair == UNPAIRED
-        message = "Your pair hasn't signed in yet, keep your fingers crossed!"
+
+      # Store the user, check code
+      user = User.find_or_create_by_email(github_user.email)
+      code = Code.find_by_value(params['code'])
+
+      # Unknown code? Try again
+      redirect '/?error=1' unless code
+
+      LOGGER.info "Matched #{user.email} to #{code.value}"
+
+      user.update_with_code(code)
+
+      if code.pair_claimed?
+        message = "Your pair is #{code.paired_user.email}! Click here to send an email and set up a pairing session! Don't be shy!"
       else
-        message = "Your pair is #{pair}! Click here to send an email and set up a pairing session! Don't be shy!"
+        message = "Your pair hasn't signed in yet, keep your fingers crossed!"
       end
+
       <<-PAIR
-You submitted code #{code}<br>
+You submitted code #{code.value}<br>
 #{message}
 PAIR
     end
