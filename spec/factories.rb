@@ -1,4 +1,5 @@
 require 'factory_girl'
+require 'faker'
 
 FactoryGirl.define do
   sequence :random_code do |n|
