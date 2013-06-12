@@ -14,6 +14,10 @@ module PpwmMatcher
       end
     end
 
+    def assign_user(user)
+      users << user
+    end
+
     def ensure_value
       self.value ||= generate_string
     end

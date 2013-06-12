@@ -39,13 +39,19 @@ describe PpwmMatcher::Code do
     end
   end
 
-  describe "allows no more than two users" do
-    it "should raise an error when more than two users are associated" do
-      code.users << FactoryGirl.create(:user)
-      code.users << FactoryGirl.create(:user)
-      code.users << FactoryGirl.create(:user)
+  it "should raise an error when more than two users are associated" do
+    code.users << FactoryGirl.create(:user)
+    code.users << FactoryGirl.create(:user)
+    code.users << FactoryGirl.create(:user)
 
-      expect(code).not_to be_valid
+    expect(code).not_to be_valid
+  end
+
+  describe "#assign_user" do
+    it "adds given user to users" do
+      user = FactoryGirl.create(:user)
+
+      expect { code.assign_user(user) }.to change{ code.users(true).count }
     end
   end
 end
