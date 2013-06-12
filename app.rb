@@ -10,7 +10,7 @@ module PpwmMatcher
     enable :sessions
 
     set :github_options, {
-      :scopes    => "user",
+      :scopes    => "user:email",
       :secret    => ENV['GITHUB_CLIENT_SECRET'],
       :client_id => ENV['GITHUB_CLIENT_ID'],
     }
@@ -30,9 +30,15 @@ module PpwmMatcher
       <<-PAIR
 <h1>Hello there, #{github_user.login}!</h1>
 #{message}
-<p>Enter your code:</p>
 <form action='/code' method='POST'>
-  <input type='text' name='code' value=''>
+  <p>
+    Enter your code:
+    <input type='text' name='code' value=''>
+  </p>
+  <p>
+    Email:
+    <input type='text' name='email' value='#{github_user.email}'>
+  </p>
   <input type='submit'>
 </form>
 PAIR
@@ -45,9 +51,8 @@ PAIR
 
     post '/code' do
       authenticate!
-
       # Store the user, check code
-      user = User.find_or_create_by_email(github_user.email)
+      user = User.find_or_create_by_email(params['email'])
       code = Code.find_by_value(params['code'])
 
       # Unknown code? Try again
