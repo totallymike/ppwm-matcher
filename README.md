@@ -16,7 +16,15 @@ A sinatra app with github auth for Avdi
 
 ## Setup
 
-First, you need to [create a github application](https://github.com/settings/applications/new). Make a note of the client ID and secret. Your callback URL should be `http://<domain>/auth/github/callback`.
+You'll want to have two [github applications](https://github.com/settings/applications/new), one for development, and one for production.
+
+For each app, Make a note of the client ID and secret.
+
+For production, enter your application URL `http://<domain>/` and
+set the callback URL should be `http://<domain>/auth/github/callback`.
+
+For development, set your application URL to `http://localhost/` and set your
+callback URL to `http://localhost:9393/auth/github/callback`
 
 ### For development
 
