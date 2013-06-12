@@ -6,18 +6,6 @@ module PpwmMatcher
 
     before_create :ensure_value
 
-    # Create two codes and link them as pairs.
-    def self.create_pair
-      first  = Code.create!(:value => generate_string)
-
-      second = Code.create!(:value => generate_string,
-                            :paired_code_id => first.id)
-
-      first.update_attribute(:paired_code_id, second.id)
-
-      [first, second]
-    end
-
     def ensure_value
       self.value ||= generate_string
     end

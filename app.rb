@@ -42,8 +42,7 @@ PAIR
     end
 
     get '/code/create' do
-      codes = Code.create_pair
-      codes.map { |c| [c.id, c.value] }.inspect
+      code = Code.create
     end
 
     post '/code' do
