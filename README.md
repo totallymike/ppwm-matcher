@@ -6,13 +6,23 @@ A sinatra app with github auth for Avdi
 
 ## TODO
 
-* a way to add codes
-* persist codes, persist matched users
-* link to user emails
-* store data in the session
+* a way to view created codes
+* add a mailto: link to user emails
 * fix deprecation warnings from github auth
 * don't let codes be re-used by other users
-* analytics?
+* require an email address if not submitted
+* make a get '/code' route behave nicely, or otherwise improve UX
+* move view code out of the app.rb
+* anything else you can think of:
+  * security
+  * gravatars for fun
+  * design
+  * letting you know when your 'pair' signed in
+  * letting an admin view a list of paired users and codes
+  * maybe leave messages for avdi in some queue...
+  * add admin links (need to create an admin user, user roles) e.g. to create codes etc
+  * UX
+  * analytics?
 
 ## Setup
 
