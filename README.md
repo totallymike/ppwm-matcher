@@ -12,6 +12,7 @@ A sinatra app with github auth for Avdi
 * don't let codes be re-used by other users
 * require an email address if not submitted
 * make a get '/code' route behave nicely, or otherwise improve UX
+  * e.g. Right now, you can only check if your pair has signed in by submitting your code via post
 * move view code out of the app.rb
 * anything else you can think of:
   * security
