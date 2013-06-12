@@ -4,6 +4,40 @@ A sinatra app with github auth for Avdi
 
 * see [ppwm](https://github.com/avdi/ppwm), [a ppwm scraper](https://github.com/martyhines/pair_with_me), and [rubypair](https://github.com/rubypair/rubypair)
 
+## In a nutshell
+
+As an Avdi
+I want to promote pair programming
+So that hackers will be happier
+
+*When* I distribute cards at a conference which say:
+
+    Find your pair!
+    Go to: pairprogramwith.me/match
+    Enter: ABC123
+    
+*And* every card has one identical twin
+*When* Jane, the first recipient, follows the directions on her card
+*And* she logs in with Github
+*And* she enters her email address
+*Then* she is told:
+
+    Your pair hasn't signed in yet. Keep your fingers crossed!"
+    
+*When* the second recipient, Bob, follows the directions on his card
+*Then* they are told:
+
+    You've been matched with Jane! Click here to email her!
+    
+## FAQ
+
+*Why match based on fixed codes? Why not just randomly match people as they arrive?*
+
+Because:
+
+1. It's a fun twist; and
+2. It means if you *don't* sign in, someone out there doesn't have a pair. And who wants to leave their pair in the lurch?! Guilt FTW!
+
 ## TODO
 
 * a way to view created codes
