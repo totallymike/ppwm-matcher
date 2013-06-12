@@ -6,9 +6,9 @@ A sinatra app with github auth for Avdi
 
 ## In a nutshell
 
-As an Avdi
-I want to promote pair programming
-So that hackers will be happier
+As an Avdi<br/>
+I want to promote pair programming<br/>
+So that hackers will be happier<br/>
 
 *When* I distribute cards at a conference which say:
 
@@ -16,15 +16,15 @@ So that hackers will be happier
     Go to: pairprogramwith.me/match
     Enter: ABC123
     
-*And* every card has one identical twin
-*When* Jane, the first recipient, follows the directions on her card
-*And* she logs in with Github
-*And* she enters her email address
+*And* every card has one identical twin<br/>
+*When* Jane, the first recipient, follows the directions on her card<br/>
+*And* she logs in with Github<br/>
+*And* she enters her email address<br/>
 *Then* she is told:
 
     Your pair hasn't signed in yet. Keep your fingers crossed!"
     
-*When* the second recipient, Bob, follows the directions on his card
+*When* the second recipient, Bob, follows the directions on his card<br/>
 *Then* they are told:
 
     You've been matched with Jane! Click here to email her!
