@@ -1,7 +1,8 @@
 class Code < ActiveRecord::Base
   attr_accessible :value, :paired_code_id
 
-  belongs_to :code, :foreign_key => "paired_code_id"
+  belongs_to :paired_code, :class_name => "Code", :foreign_key => "paired_code_id"
+  has_one :user
 
   # Create two codes and link them as pairs.
   def self.create_pair
@@ -18,5 +19,13 @@ class Code < ActiveRecord::Base
   # Generate a random 6 character code.
   def self.generate_string
     (0...6).map{(65+rand(26)).chr}.join
+  end
+
+  def pair_claimed?
+    !!paired_user
+  end
+
+  def paired_user
+    paired_code.user
   end
 end
