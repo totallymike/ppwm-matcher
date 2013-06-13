@@ -37,6 +37,14 @@ describe PpwmMatcher::Code do
 
       expect(codes.uniq).to have_exactly(10).items
     end
+
+    it "should not override value if already specified" do
+      code.value = "BLAH"
+
+      code.ensure_value
+
+      expect(code.value).to eql("BLAH")
+    end
   end
 
   it "should raise an error when more than two users are associated" do
