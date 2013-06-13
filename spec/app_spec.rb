@@ -31,6 +31,16 @@ describe PpwmMatcher::App do
 
       expect(last_response).not_to be_ok
     end
+
+    it "can accept codes as raw input" do
+      authorize 'admin', 'ZOMGSECRET'
+
+      expect {
+        post '/code/import', codes.join("\n"), "CONTENT_TYPE" => "text/plain"
+      }.to change{ PpwmMatcher::Code.count }.by codes.length
+
+      expect(PpwmMatcher::Code.where(:value => codes).length).to eql(codes.length)
+    end
   end
 
   describe "POST /code" do
