@@ -1,10 +1,6 @@
 require 'logger'
-require 'sinatra'
-require 'sinatra_auth_github'
+require 'active_record'
 require 'sinatra/activerecord'
-require './models/code'
-require './models/user'
-require './models/github_auth'
 
 case ENV['RACK_ENV']
 when 'test', 'development'
@@ -18,68 +14,15 @@ end
 
 ActiveRecord::Base.logger = LOGGER
 
+$:.unshift(File.expand_path('../lib', __FILE__))
+
+require_relative 'lib/ppwm_matcher/app.rb'
+
 module PpwmMatcher
   class App < Sinatra::Base
-    enable :sessions
+    PpwmMatcher::App.register Sinatra::ActiveRecordExtension
 
-    set :github_options, PpwmMatcher::GithubAuth.options
-
-    register Sinatra::Auth::Github
-
-    helpers do
-      def repos
-        github_request("user/repos")
-      end
-    end
-
-    get '/' do
-      authenticate!
-
-      @message = ''
-      @email = github_user.email
-      @login = github_user.login
-
-      if params['error']
-        @message = "Unknown code, try again"
-      end
-
-      erb :index, layout: :layout
-    end
-
-    get '/code/create' do
-      code = Code.create
-    end
-
-    post '/code/import' do
-      params['codes'].each do |code|
-        Code.create!(:value => code)
-      end
-    end
-
-    post '/code' do
-      authenticate!
-
-      # Store the user, check code
-      user = User.where(:email => params['email']).first_or_create
-      code = Code.where(:value => params['code']).first
-
-
-      if code
-        code.assign_user user
-        LOGGER.info "Matched #{user.email} to #{code.value}"
-
-        if user.has_pair?
-          @message = "Your pair is #{user.pair.email}! Click here to send an email and set up a pairing session! Don't be shy!"
-        else
-          @message = "Your pair hasn't signed in yet, keep your fingers crossed!"
-        end
-
-        @code_value = code.value
-        erb :code, layout: :layout
-      else
-        redirect '/?error=1'
-      end
-    end
-
+    set :database_file,
+        File.expand_path('../config/database.yml', __FILE__)
   end
 end

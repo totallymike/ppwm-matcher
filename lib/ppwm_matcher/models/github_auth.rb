@@ -8,6 +8,7 @@ module PpwmMatcher
       :scopes    => "user:email",
       :secret    => secret,
       :client_id => client_id,
+      :callback_url => callback_url
     }
     end
 
@@ -39,6 +40,10 @@ module PpwmMatcher
     end
     def app_config_filename
       'config/application.yml'
+    end
+
+    def callback_url
+      ENV.fetch('GITHUB_CALLBACK_URL') { '/auth/github/callback' }
     end
   end
 end

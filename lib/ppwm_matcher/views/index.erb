@@ -3,7 +3,7 @@
 </h1>
 <%= @message %>
 
-<form action='/code' method='POST'>
+<form action="<%= url('/code') %>" method='POST'>
   <p>
     Enter your code:
     <input type='text' name='code' value=''>
