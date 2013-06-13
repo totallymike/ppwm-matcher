@@ -104,7 +104,7 @@ module PpwmMatcher
       @code = params['code']
       @messages = messages
       @email = params['email'] || github_user.email
-      @login = github_user.login
+      @name = github_user.name
 
       user = User.current(github_user)
       if user && user.has_code?
