@@ -14,6 +14,11 @@ module PpwmMatcher
 
     set :github_options, PpwmMatcher::GithubAuth.options
 
+    configure do
+      set :admin_username, ENV.fetch('ADMIN_USERNAME') { 'admin' }
+      set :admin_password, ENV.fetch('ADMIN_PASSWORD') { 'ZOMGSECRET' }
+    end
+
     register Sinatra::Auth::Github
 
     # actions that don't require GH auth
@@ -27,6 +32,21 @@ module PpwmMatcher
     helpers do
       def repos
         github_request("user/repos")
+      end
+
+      def protected!
+        return if authorized?
+
+        headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
+        halt 401, "Not authorized\n"
+      end
+
+      def authorized?
+        auth =  Rack::Auth::Basic::Request.new(request.env)
+
+        auth.credentials == [settings.admin_username, settings.admin_password]
+      rescue
+        false
       end
     end
 
@@ -45,6 +65,8 @@ module PpwmMatcher
     end
 
     post '/code/import' do
+      protected!
+
       params['codes'].each do |code|
         Code.create!(:value => code)
       end
