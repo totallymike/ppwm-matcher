@@ -5,6 +5,7 @@ describe PpwmMatcher::CodeMatcher do
 
   describe "user creation" do
     before(:each) { PpwmMatcher::User.delete_all }
+    let(:existing_user) { FactoryGirl.create(:user, email: 'test2@example.com', github_login: github_user.login) }
     let(:code_klass) { mock(PpwmMatcher::Code).as_null_object }
     let(:default_args) do
       {
@@ -21,8 +22,12 @@ describe PpwmMatcher::CodeMatcher do
     end
 
     it "does not need to create a new user" do
-      existing_user = FactoryGirl.create(:user, email: 'test2@example.com')
       args = default_args.merge!({ email: existing_user.email })
+      expect { PpwmMatcher::CodeMatcher.new(args) }.not_to change { PpwmMatcher::User.count }
+    end
+
+    it "cannot create the same github user twice" do
+      args = default_args.merge!({ email: "x-#{existing_user.email}" })
       expect { PpwmMatcher::CodeMatcher.new(args) }.not_to change { PpwmMatcher::User.count }
     end
   end
