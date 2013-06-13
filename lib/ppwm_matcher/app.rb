@@ -88,10 +88,9 @@ module PpwmMatcher
         code: params['code']
       })
 
-      if matcher.valid?
-        code, user = matcher.assign_code_to_user
-        @pair = user.pair
-        @code_value = code.value
+      if matcher.valid? && matcher.assign_code_to_user
+        @pair = matcher.user.pair
+        @code_value = matcher.code.value
         erb :code, layout: :layout
       else
         setup_for_root_path(matcher.error_messages)
@@ -104,6 +103,11 @@ module PpwmMatcher
       @messages = messages
       @email = params['email'] || github_user.email
       @login = github_user.login
+
+      user = User.current(github_user)
+      if user && user.has_code?
+        @has_code = true
+      end
     end
 
   end

@@ -8,10 +8,14 @@ module PpwmMatcher
 
     def cannot_have_more_than_two_users
       if users(true).length > 2
-        errors.add(:users, "can't have more than 2 users")
+        add_error_already_paired
       end
     end
     private :cannot_have_more_than_two_users
+
+    def add_error_already_paired
+      errors.add(:base, "The code is already in use by a pair")
+    end
 
     def assign_user(user)
       users << user

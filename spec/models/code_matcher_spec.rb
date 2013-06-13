@@ -43,13 +43,23 @@ describe PpwmMatcher::CodeMatcher do
     end
 
     it "not when code is missing" do
-      args = default_args.merge!({ code: 'xxx' })
+      args = default_args.merge!({ code: 'xxxx' })
       expect(PpwmMatcher::CodeMatcher.new(args).valid?).to be_false
     end
 
     it "not when user email is blank" do
       args = default_args.merge!({ email: nil })
       expect(PpwmMatcher::CodeMatcher.new(args).valid?).to be_false
+    end
+
+    it "not when both pairs have been assigned to the code" do
+      pair1 = FactoryGirl.create(:user, code: existing_code, email: "pair1@example.com")
+      pair2 = FactoryGirl.create(:user, code: existing_code, email: "pair2@example.com")
+
+      args = default_args.merge!({ email: "nopair@example.com" })
+      matcher = PpwmMatcher::CodeMatcher.new(args)
+      expect(matcher.assign_code_to_user).to be_false
+      expect(matcher.valid?).to be_false
     end
   end
 
