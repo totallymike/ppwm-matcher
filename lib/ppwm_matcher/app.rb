@@ -74,6 +74,8 @@ module PpwmMatcher
       authenticate!
 
       user = User.current(github_user) # TODO: refactor to helper method ?
+      redirect '/' unless user && user.code
+
       @pair = user.pair
       @code_value = user.code.value
       erb :code, layout: :layout
