@@ -17,11 +17,19 @@ describe PpwmMatcher::App do
     let(:codes) { (1..10).map{ FactoryGirl.generate(:random_code) } }
 
     it "accepts a list of codes and creates them" do
+      authorize 'admin', 'ZOMGSECRET'
+
       expect {
         post '/code/import', :codes => codes
       }.to change{ PpwmMatcher::Code.count }.by codes.length
 
       expect(PpwmMatcher::Code.where(:value => codes).length).to eql(codes.length)
+    end
+
+    it "requires basic auth" do
+      post '/code/import', :codes => codes
+
+      expect(last_response).not_to be_ok
     end
   end
 
