@@ -4,8 +4,6 @@ module PpwmMatcher
 
     has_many :users
 
-    before_create :ensure_value
-
     validate :cannot_have_more_than_two_users
 
     def cannot_have_more_than_two_users
@@ -16,6 +14,11 @@ module PpwmMatcher
 
     def assign_user(user)
       users << user
+    end
+
+    def create_or_update
+      ensure_value
+      super
     end
 
     def ensure_value
