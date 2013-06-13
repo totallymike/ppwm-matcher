@@ -39,6 +39,12 @@ module PpwmMatcher
       code = Code.create
     end
 
+    post '/code/import' do
+      params['codes'].each do |code|
+        Code.create!(:value => code)
+      end
+    end
+
     post '/code' do
       authenticate!
 

@@ -1,7 +1,11 @@
 ENV['RACK_ENV'] ||= 'test'
 
 require "bundler/setup"
+require 'rack/test'
+
 require_relative '../app'
+
+require 'sinatra/auth/github/test/test_helper'
 
 require 'factory_girl'
 
