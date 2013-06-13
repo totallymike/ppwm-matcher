@@ -109,4 +109,25 @@ describe PpwmMatcher::App do
       expect(code.users(true).where(:email => github_user.email).size).to eql(1)
     end
   end
+
+  describe "GET /codes" do
+    let(:codes) { FactoryGirl.create_list(:code, 10) }
+
+    it "requires authorization" do
+      get '/codes'
+
+      expect(last_response).not_to be_ok
+    end
+
+    it "contains a listing of all codes" do
+      codes
+
+      authorize 'admin', 'ZOMGSECRET'
+      get '/codes'
+
+      codes.each do |code|
+        expect(last_response.body).to include(code.value)
+      end
+    end
+  end
 end
