@@ -6,12 +6,23 @@ require './models/code'
 require './models/user'
 require './models/github_auth'
 
+case ENV['RACK_ENV']
+when 'test', 'development'
+  LOGGER = Logger.new(
+    File.expand_path(
+      "../log/#{ENV['RACK_ENV']}.log",
+      __FILE__))
+else
+  LOGGER = Logger.new($stdout)
+end
+
+ActiveRecord::Base.logger = LOGGER
+
 module PpwmMatcher
   class App < Sinatra::Base
     enable :sessions
 
     set :github_options, PpwmMatcher::GithubAuth.options
-    LOGGER = Logger.new(STDOUT)
 
     register Sinatra::Auth::Github
 
