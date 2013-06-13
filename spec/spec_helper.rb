@@ -5,6 +5,8 @@ require 'rack/test'
 
 require_relative '../app'
 
+require 'sinatra/auth/github/test/test_helper'
+
 require 'factory_girl'
 
 FactoryGirl.find_definitions
