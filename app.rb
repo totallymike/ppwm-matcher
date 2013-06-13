@@ -44,11 +44,11 @@ module PpwmMatcher
 
       # Store the user, check code
       user = User.where(:email => params['email']).first_or_create
-      code = Code.where(:code  => params['code']).first
+      code = Code.where(:value => params['code']).first
 
-      code.assign_user user
 
       if code
+        code.assign_user user
         LOGGER.info "Matched #{user.email} to #{code.value}"
 
         if user.has_pair?
