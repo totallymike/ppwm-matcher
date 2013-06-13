@@ -15,13 +15,17 @@ module PpwmMatcher
     attr_reader :code, :user
 
     def assign_code_to_user
-      PpwmMatcher::App::LOGGER.info "Matched #{user.email} to #{code.value}"
-      code.assign_user user
-      [code, user]
+      if code.users.length < 2
+        code.assign_user user
+        true
+      else
+        code.add_error_already_paired
+        false
+      end
     end
 
     def valid?
-      code && code.valid? && user.valid?
+      code && code.errors.empty? && user.errors.empty?
     end
 
     def error_messages

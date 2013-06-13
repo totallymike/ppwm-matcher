@@ -92,10 +92,9 @@ module PpwmMatcher
         code: params['code']
       })
 
-      if matcher.valid?
-        code, user = matcher.assign_code_to_user
-        @pair = user.pair
-        @code_value = code.value
+      if matcher.valid? && matcher.assign_code_to_user
+        @pair = matcher.user.pair
+        @code_value = matcher.code.value
         erb :code, layout: :layout
       else
         setup_for_root_path(matcher.error_messages)

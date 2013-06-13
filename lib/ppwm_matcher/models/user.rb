@@ -3,7 +3,7 @@ module PpwmMatcher
     self.table_name_prefix = "ppwm_matcher_"
 
     attr_accessible :email, :code_id
-    belongs_to :code
+    belongs_to :code, validate: true
     validates :email, presence: true
 
     def has_pair?
