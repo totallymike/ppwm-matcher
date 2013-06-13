@@ -107,5 +107,9 @@ module PpwmMatcher
       end
     end
 
+    get '/codes' do
+      @codes = Code.listing
+      erb :codes, layout: :layout
+    end
   end
 end

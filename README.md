@@ -42,9 +42,8 @@ Because:
 
 **Check the [issues](https://github.com/rubyrogues/ppwm-matcher/issues) first!**
 
-* a way to view created codes
+* add pagination to code listing (/codes route)
 * fix deprecation warnings from github auth
-* don't let codes be re-used by other users
 * anything else you can think of:
   * security
   * design
