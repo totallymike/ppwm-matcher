@@ -24,14 +24,13 @@ module PpwmMatcher
       where(:github_login => github_user.login).limit(1).first
     end
 
-    def self.find_or_create(email, github_user)
-      user = where(:email => email).limit(1).first
-      unless user
-        user = User.new(email: email)
-        user.gravatar_id = github_user.gravatar_id
-        user.github_login = github_user.login
-        user.save
-      end
+    def self.update_or_create(email, github_user)
+      user = where(:github_login => github_user.login).first_or_initialize(
+        :gravatar_id   => github_user.gravatar_id,
+        :github_login  => github_user.login
+      )
+      user.email = email
+      user.save
       user
     end
   end
