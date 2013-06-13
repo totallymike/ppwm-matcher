@@ -52,6 +52,8 @@ GEM
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
+    rack-test (0.6.2)
+      rack (>= 1.0)
     rake (10.0.4)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
@@ -91,6 +93,7 @@ DEPENDENCIES
   factory_girl
   faker
   ppwm-matcher!
+  rack-test
   rspec
   sqlite3
   thin

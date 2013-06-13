@@ -1,6 +1,8 @@
 ENV['RACK_ENV'] ||= 'test'
 
 require "bundler/setup"
+require 'rack/test'
+
 require_relative '../app'
 
 require 'factory_girl'
