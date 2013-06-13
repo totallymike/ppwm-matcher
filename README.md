@@ -103,6 +103,20 @@ If you want to daemonize your dev server
 ./serve.sh stop
 ```
 
+#### Testing
+
+Migrate your test database
+
+```bash
+RACK_ENV=test rake db:migrate
+```
+
+Run rspec
+
+```bash
+rspec
+```
+
 ### Deploying to heroku (production)
 
   ```bash
