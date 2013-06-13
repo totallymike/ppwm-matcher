@@ -107,6 +107,11 @@ module PpwmMatcher
       @messages = messages
       @email = params['email'] || github_user.email
       @login = github_user.login
+
+      user = User.current(github_user)
+      if user && user.has_code?
+        @has_code = true
+      end
     end
 
   end

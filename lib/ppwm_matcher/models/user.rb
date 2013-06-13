@@ -6,6 +6,10 @@ module PpwmMatcher
     belongs_to :code, validate: true
     validates :email, presence: true
 
+    def has_code?
+      code_id.present?
+    end
+
     def has_pair?
       !!pair
     end
