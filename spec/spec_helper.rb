@@ -8,6 +8,7 @@ require_relative '../app'
 require 'sinatra/auth/github/test/test_helper'
 
 require 'factory_girl'
+require 'database_cleaner'
 
 FactoryGirl.find_definitions
 
@@ -21,4 +22,17 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = 'random'
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end

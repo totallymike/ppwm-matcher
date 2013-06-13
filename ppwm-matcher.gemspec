@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'factory_girl'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rack-test'
+  s.add_development_dependency 'database_cleaner'
 
   s.add_development_dependency 'guard'
   s.add_development_dependency 'guard-bundler'
