@@ -52,10 +52,10 @@ PAIR
       user = User.where(:email => params['email']).first_or_create
       code = Code.where(:value => params['code']).first
 
-      code.assign_user user
-
       # Unknown code? Try again
       redirect '/?error=1' unless code
+
+      code.assign_user user
 
       LOGGER.info "Matched #{user.email} to #{code.value}"
 
