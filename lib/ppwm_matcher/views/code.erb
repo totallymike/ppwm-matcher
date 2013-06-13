@@ -1,6 +1,4 @@
-<p>
-  You submitted code <%= @code_value %>
-</p>
+<h1>Thanks for submitting your code!</h1>
 
 <% if @pair %>
   <!-- TODO: remove inline styles -->
@@ -12,7 +10,7 @@
     <div>
       <a href="mailto: <%= @pair.email %>?subject=Pair Programming">Click here</a> to send an email and set up a pairing session! Don't be shy!<br />
       Your pair is <a href="mailto: <%= @pair.email %>"><%= @pair.email %></a><br />
-      Checkout their Github profile: <a href="https://github.com/<%= @pair.github_login %>">https://github.com/<%= @pair.github_login %></a>
+      Check out their Github profile: <a href="https://github.com/<%= @pair.github_login %>">https://github.com/<%= @pair.github_login %></a>
     </div>
   </div>
 <% else %>
@@ -20,3 +18,9 @@
     Your pair hasn't signed in yet, keep your fingers crossed!
   </p>
 <% end %>
+
+<div style="clear: left;"></div>
+
+<p>
+Your code: <strong><%= @code_value %></strong>
+</p>
