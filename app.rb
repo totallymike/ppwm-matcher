@@ -29,6 +29,7 @@ module PpwmMatcher
     end
 
     get '/code/create' do
+      authenticate!
       code = Code.create
     end
 
@@ -36,6 +37,15 @@ module PpwmMatcher
       params['codes'].each do |code|
         Code.create!(:value => code)
       end
+    end
+
+    get '/code' do
+      authenticate!
+
+      user = User.current(github_user) # TODO: refactor to helper method ?
+      @pair = user.pair
+      @code_value = user.code.value
+      erb :code, layout: :layout
     end
 
     post '/code' do
@@ -49,13 +59,7 @@ module PpwmMatcher
 
       if matcher.valid?
         code, user = matcher.assign_code_to_user
-
-        if user.has_pair?
-          @message = "Your pair is #{user.pair.email}! Click here to send an email and set up a pairing session! Don't be shy!"
-        else
-          @message = "Your pair hasn't signed in yet, keep your fingers crossed!"
-        end
-
+        @pair = user.pair
         @code_value = code.value
         erb :code, layout: :layout
       else
