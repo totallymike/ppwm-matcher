@@ -24,19 +24,13 @@ module PpwmMatcher
       where(:github_login => github_user.login).limit(1).first
     end
 
-    # now this method is really doing find_or_create_or_update_email - doh!
-    def self.find_or_create(email, github_user)
-      user = where(:github_login => github_user.login).limit(1).first
-
-      if user
-        user.update_attribute(:email, email)
-      else
-        user = User.new(email: email)
-        user.gravatar_id = github_user.gravatar_id
-        user.github_login = github_user.login
-        user.save
-      end
-
+    def self.update_or_create(email, github_user)
+      user = where(:github_login => github_user.login).first_or_initialize(
+        :gravatar_id   => github_user.gravatar_id,
+        :github_login  => github_user.login
+      )
+      user.email = email
+      user.save
       user
     end
   end
