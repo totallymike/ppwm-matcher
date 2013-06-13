@@ -15,6 +15,14 @@ module PpwmMatcher
 
     register Sinatra::Auth::Github
 
+    # actions that don't require GH auth
+    open_actions = %w(unauthenticated code/import)
+
+    before '/*' do
+      return if open_actions.include? params[:splat].first
+      authenticate!
+    end
+
     helpers do
       def repos
         github_request("user/repos")
@@ -22,8 +30,6 @@ module PpwmMatcher
     end
 
     get '/' do
-      authenticate!
-
       @message = ''
       @email = github_user.email
       @login = github_user.login
@@ -50,8 +56,6 @@ module PpwmMatcher
     end
 
     post '/code' do
-      authenticate!
-
       # Store the user, check code
       user = User.where(:email => params['email']).first_or_create
       code = Code.where(:value => params['code']).first
