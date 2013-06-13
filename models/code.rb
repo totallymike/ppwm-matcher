@@ -11,6 +11,7 @@ module PpwmMatcher
         errors.add(:users, "can't have more than 2 users")
       end
     end
+    private :cannot_have_more_than_two_users
 
     def assign_user(user)
       users << user
