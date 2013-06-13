@@ -23,22 +23,16 @@ module PpwmMatcher
 
     get '/' do
       authenticate!
-      message = params['error'] ? "<strong>Unknown code, try again</strong>" : ""
-      <<-PAIR
-<h1>Hello there, #{github_user.login}!</h1>
-#{message}
-<form action='/code' method='POST'>
-  <p>
-    Enter your code:
-    <input type='text' name='code' value=''>
-  </p>
-  <p>
-    Email:
-    <input type='text' name='email' value='#{github_user.email}'>
-  </p>
-  <input type='submit'>
-</form>
-PAIR
+
+      @message = ''
+      @email = github_user.email
+      @login = github_user.login
+
+      if params['error']
+        @message = "Unknown code, try again"
+      end
+
+      erb :index, layout: :layout
     end
 
     get '/code/create' do
@@ -52,23 +46,22 @@ PAIR
       user = User.where(:email => params['email']).first_or_create
       code = Code.where(:value => params['code']).first
 
-      # Unknown code? Try again
-      redirect '/?error=1' unless code
 
-      code.assign_user user
+      if code
+        code.assign_user user
+        LOGGER.info "Matched #{user.email} to #{code.value}"
 
-      LOGGER.info "Matched #{user.email} to #{code.value}"
+        if user.has_pair?
+          @message = "Your pair is #{user.pair.email}! Click here to send an email and set up a pairing session! Don't be shy!"
+        else
+          @message = "Your pair hasn't signed in yet, keep your fingers crossed!"
+        end
 
-      if user.has_pair?
-        message = "Your pair is #{user.pair.email}! Click here to send an email and set up a pairing session! Don't be shy!"
+        @code_value = code.value
+        erb :code, layout: :layout
       else
-        message = "Your pair hasn't signed in yet, keep your fingers crossed!"
+        redirect '/?error=1'
       end
-
-      <<-PAIR
-You submitted code #{code.value}<br>
-#{message}
-PAIR
     end
 
   end
