@@ -42,5 +42,9 @@ module PpwmMatcher
     def paired_user
       paired_code.user
     end
+
+    def self.listing
+      order(:value).includes(:users)
+    end
   end
 end

@@ -1,0 +1,29 @@
+<h1>
+  Code Listing
+</h1>
+
+<table style="width: 100%">
+  <thead>
+    <tr>
+      <td>Code</td>
+      <td>Pairs</td>
+      <td>Created At</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @codes.each do |code| %>
+      <tr>
+        <td><%= code.value %></td>
+        <td>
+          <%
+          user_links = code.users.map do |pair|
+            "<a href='https://github.com/#{pair.github_login}'>#{pair.github_login}</a>"
+          end
+          %>
+          <%= user_links.join(" | ") %>
+        </td>
+        <td><%= code.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
