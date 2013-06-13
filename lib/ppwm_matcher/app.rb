@@ -22,7 +22,7 @@ module PpwmMatcher
     register Sinatra::Auth::Github
 
     # actions that don't require GH auth
-    open_actions = %w(unauthenticated code/import)
+    open_actions = %w(unauthenticated code/import codes)
 
     before '/*' do
       return if open_actions.include? params[:splat].first
@@ -108,7 +108,10 @@ module PpwmMatcher
     end
 
     get '/codes' do
+      protected!
+
       @codes = Code.listing
+
       erb :codes, layout: :layout
     end
   end
