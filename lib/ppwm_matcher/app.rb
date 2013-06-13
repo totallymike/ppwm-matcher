@@ -60,10 +60,6 @@ module PpwmMatcher
       erb :unauthenticated, layout: :layout
     end
 
-    get '/code/create' do
-      code = Code.create
-    end
-
     post '/code/import' do
       protected!
 
