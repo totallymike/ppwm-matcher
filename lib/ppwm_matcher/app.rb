@@ -3,6 +3,7 @@ require 'sinatra'
 require 'sinatra_auth_github'
 require 'ppwm_matcher/models/code'
 require 'ppwm_matcher/models/user'
+require 'ppwm_matcher/models/code_matcher'
 require 'ppwm_matcher/models/github_auth'
 
 module PpwmMatcher
@@ -23,15 +24,7 @@ module PpwmMatcher
 
     get '/' do
       authenticate!
-
-      @message = ''
-      @email = github_user.email
-      @login = github_user.login
-
-      if params['error']
-        @message = "Unknown code, try again"
-      end
-
+      setup_for_root_path
       erb :index, layout: :layout
     end
 
@@ -49,29 +42,40 @@ module PpwmMatcher
       end
     end
 
+    get '/code' do
+      authenticate!
+
+      user = User.current(github_user) # TODO: refactor to helper method ?
+      @pair = user.pair
+      @code_value = user.code.value
+      erb :code, layout: :layout
+    end
+
     post '/code' do
       authenticate!
 
-      # Store the user, check code
-      user = User.where(:email => params['email']).first_or_create
-      code = Code.where(:value => params['code']).first
+      matcher = CodeMatcher.new({
+        github_user: github_user,
+        email: params['email'],
+        code: params['code']
+      })
 
-
-      if code
-        code.assign_user user
-        logger.info "Matched #{user.email} to #{code.value}"
-
-        if user.has_pair?
-          @message = "Your pair is #{user.pair.email}! Click here to send an email and set up a pairing session! Don't be shy!"
-        else
-          @message = "Your pair hasn't signed in yet, keep your fingers crossed!"
-        end
-
+      if matcher.valid?
+        code, user = matcher.assign_code_to_user
+        @pair = user.pair
         @code_value = code.value
         erb :code, layout: :layout
       else
-        redirect '/?error=1'
+        setup_for_root_path(matcher.error_messages)
+        erb :index, layout: :layout
       end
+    end
+
+    def setup_for_root_path(messages = nil)
+      @code = params['code']
+      @messages = messages
+      @email = params['email'] || github_user.email
+      @login = github_user.login
     end
 
   end

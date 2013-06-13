@@ -28,10 +28,9 @@ describe PpwmMatcher::App do
   describe "POST /code" do
     let(:user) { make_user(:login => 'test_user') }
 
-    it "redirects to github for authentication when not logged in" do
+    it "asks the user to reenter the code" do
       post '/code', :code => 'FOOBAR'
 
-      expect(last_response.redirect?).to be_true
       expect(last_response.headers['Location']).to include('github.com')
     end
 
@@ -40,8 +39,8 @@ describe PpwmMatcher::App do
 
       post '/code', :code => 'FOOBAR'
 
-      expect(last_response.redirect?).to be_true
-      expect(last_response.headers['Location']).to include('/?error=1')
+      expect(last_response.body).to include("Unknown code, try again")
+      expect(last_response.body).to include("Enter your code")
     end
 
     it "when a valid code is provided it shows the code" do
