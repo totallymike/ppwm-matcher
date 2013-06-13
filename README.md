@@ -40,6 +40,8 @@ Because:
 
 ## TODO
 
+**Check the [issues](https://github.com/rubyrogues/ppwm-matcher/issues) first!**
+
 * a way to view created codes
 * add a mailto: link to user emails
 * fix deprecation warnings from github auth

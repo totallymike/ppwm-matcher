@@ -1,3 +1,13 @@
+PATH
+  remote: .
+  specs:
+    ppwm-matcher (0.0.1)
+      activerecord
+      pg
+      rake
+      sinatra-activerecord
+      sinatra_auth_github
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -51,7 +61,7 @@ GEM
     rspec-expectations (2.13.0)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.13.1)
-    sinatra (1.3.5)
+    sinatra (1.3.6)
       rack (~> 1.4)
       rack-protection (~> 1.3)
       tilt (~> 1.3, >= 1.3.3)
@@ -78,13 +88,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord
   factory_girl
   faker
-  pg
-  rake
+  ppwm-matcher!
   rspec
-  sinatra-activerecord
-  sinatra_auth_github
   sqlite3
   thin
