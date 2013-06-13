@@ -51,7 +51,6 @@ module PpwmMatcher
     end
 
     get '/' do
-      authenticate!
       setup_for_root_path
       erb :index, layout: :layout
     end
@@ -71,8 +70,6 @@ module PpwmMatcher
     end
 
     get '/code' do
-      authenticate!
-
       user = User.current(github_user) # TODO: refactor to helper method ?
       redirect '/' unless user && user.code
 
@@ -82,8 +79,6 @@ module PpwmMatcher
     end
 
     post '/code' do
-      authenticate!
-
       matcher = CodeMatcher.new({
         github_user: github_user,
         email: params['email'],
