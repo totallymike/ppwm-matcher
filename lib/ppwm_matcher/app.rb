@@ -35,6 +35,10 @@ module PpwmMatcher
       erb :index, layout: :layout
     end
 
+    get '/unauthenticated' do
+      erb :unauthenticated, layout: :layout
+    end
+
     get '/code/create' do
       code = Code.create
     end
