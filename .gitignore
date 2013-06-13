@@ -2,3 +2,4 @@ config/application.yml
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
+/log/*.log
