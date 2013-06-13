@@ -67,7 +67,9 @@ module PpwmMatcher
     post '/code/import' do
       protected!
 
-      params['codes'].each do |code|
+      codes = params['codes'] || request.body.read.split("\n")
+
+      codes.each do |code|
         Code.create!(:value => code)
       end
     end
