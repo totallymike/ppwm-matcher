@@ -1,6 +1,7 @@
 require 'logger'
 require 'sinatra'
 require 'sinatra_auth_github'
+require 'pony'
 require 'ppwm_matcher/models/code'
 require 'ppwm_matcher/models/user'
 require 'ppwm_matcher/models/code_matcher'
