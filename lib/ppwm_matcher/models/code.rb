@@ -6,6 +6,8 @@ module PpwmMatcher
 
     validate :cannot_have_more_than_two_users
 
+    attr_accessible :value
+
     def cannot_have_more_than_two_users
       if users(true).length > 2
         add_error_already_paired
