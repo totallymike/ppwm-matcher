@@ -21,7 +21,9 @@ FactoryGirl.define do
   end
 
   factory :user, :class => PpwmMatcher::User do
-    email { Faker::Internet.email }
-    name  { Faker::Name.name }
+    email        { Faker::Internet.email }
+    name         { Faker::Name.name }
+    gravatar_id  { rand(1..5000) }
+    github_login { Faker::Internet.user_name }
   end
 end
