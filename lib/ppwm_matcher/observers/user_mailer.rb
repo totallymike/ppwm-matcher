@@ -23,15 +23,23 @@ module PpwmMatcher
 
     def mail_body(user, paired_user)
       return <<-EOD
-Hi #{user.name},
+Hi #{user.name || user.github_login},
 
-You've been paired up with #{paired_user.name} (gh: #{paired_user.github_login})! You can email them at #{paired_user.email} (or just reply to this email).
+You've been paired up with #{pair_name_for paired_user}! You can email them at #{paired_user.email} (or just reply to this email).
 
 Happy hacking!
 
 --
 Sent by http://pairprogramwith.me
       EOD
+    end
+
+    def pair_name_for(paired_user)
+      if paired_user.name
+        "#{paired_user.name} (gh: #{paired_user.github_login})"
+      else
+        "#{paired_user.github_login}"
+      end
     end
   end
 end

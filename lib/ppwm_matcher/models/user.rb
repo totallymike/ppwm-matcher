@@ -26,13 +26,12 @@ module PpwmMatcher
     end
 
     def self.update_or_create(email, github_user)
-      user = where(:github_login => github_user.login).first_or_initialize(
-        :gravatar_id   => github_user.gravatar_id,
-        :github_login  => github_user.login,
-        :name          => github_user.name
-      )
-      user.email = email
-      user.save
+      user = where(:github_login => github_user.login).first_or_initialize
+
+      user.update_attributes(:gravatar_id   => github_user.gravatar_id,
+                             :name          => github_user.name,
+                             :email         => email)
+
       user
     end
   end

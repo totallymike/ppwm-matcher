@@ -66,6 +66,22 @@ describe PpwmMatcher::User do
 
         expect(user.email).to eql(new_email)
       end
+
+      it "sets the name to the provided value" do
+        expect(user.name).not_to eql(github_user.name)
+
+        user = described_class.update_or_create(github_user.email, github_user)
+
+        expect(user.name).to eql(github_user.name)
+      end
+
+      it "sets the gravatar_id to the provided value" do
+        expect(user.gravatar_id).not_to eql(github_user.gravatar_id)
+
+        user = described_class.update_or_create(github_user.email, github_user)
+
+        expect(user.gravatar_id).to eql(github_user.gravatar_id)
+      end
     end
 
     describe "when no user exists" do
