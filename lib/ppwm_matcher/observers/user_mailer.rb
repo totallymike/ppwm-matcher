@@ -14,16 +14,18 @@ module PpwmMatcher
 
     private
     def mail_options(user, paired_user)
-      { :to      => user.email,
+      { :from    => 'matcher@pairprogramwith.me',
+        :to      => user.email,
+        :reply_to => paired_user.email,
         :subject => "You've been paired up with #{paired_user.github_login}!",
         :body    => mail_body(user, paired_user) }
     end
 
     def mail_body(user, paired_user)
       return <<-EOD
-Hi #{user.github_login},
+Hi #{user.name},
 
-You've been paired up with #{paired_user.github_login}! You can email them at #{paired_user.email}.
+You've been paired up with #{paired_user.name} (gh: #{paired_user.github_login})! You can email them at #{paired_user.email} (or just reply to this email).
 
 Happy hacking!
 
