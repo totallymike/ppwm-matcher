@@ -23,7 +23,7 @@ module PpwmMatcher
       return <<-EOD
 Hi #{user.github_login},
 
-You've been paired up with #{paired_user.github_login}! You can email him at #{paired_user.email}.
+You've been paired up with #{paired_user.github_login}! You can email them at #{paired_user.email}.
 
 Happy hacking!
 

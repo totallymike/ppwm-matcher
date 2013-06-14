@@ -25,12 +25,12 @@ module PpwmMatcher
         mail_client.should_receive(:mail) do |opts|
           opts[:to].should == user1.email
           opts[:subject].should == "You've been paired up with bobby!"
-          opts[:body].should include("You can email him at bob@example.com")
+          opts[:body].should include("You can email them at bob@example.com")
         end
         mail_client.should_receive(:mail) do |opts|
           opts[:to].should == user2.email
           opts[:subject].should == "You've been paired up with timmy!"
-          opts[:body].should include("You can email him at tim@example.com")
+          opts[:body].should include("You can email them at tim@example.com")
         end
         mailer.users_assigned([user1, user2])
       end
