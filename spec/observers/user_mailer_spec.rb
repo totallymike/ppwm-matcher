@@ -23,14 +23,14 @@ module PpwmMatcher
 
       it "expects mail to be sent" do
         mail_client.should_receive(:mail) do |opts|
-          opts[:to] == user1.email &&
-          opts[:subject] == "You've been paired up with bobby!" &&
-          opts[:body].include?("You can email him at bob@example.com")
+          opts[:to].should == user1.email
+          opts[:subject].should == "You've been paired up with bobby!"
+          opts[:body].should include("You can email him at bob@example.com")
         end
         mail_client.should_receive(:mail) do |opts|
-          opts[:to] == user2.email &&
-          opts[:subject] == "You've been paired up with timmy!" &&
-          opts[:body].include?("You can email him at tim@example.com")
+          opts[:to].should == user2.email
+          opts[:subject].should == "You've been paired up with timmy!"
+          opts[:body].should include("You can email him at tim@example.com")
         end
         mailer.users_assigned([user1, user2])
       end

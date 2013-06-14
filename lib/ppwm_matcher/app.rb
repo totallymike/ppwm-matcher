@@ -114,6 +114,12 @@ module PpwmMatcher
         code: params['code']
       })
 
+      if matcher.code
+        # Send mails if both pairs have signed in
+        mailer = UserMailer.new(Pony)
+        matcher.code.add_observer(mailer)
+      end
+
       if matcher.valid? && matcher.assign_code_to_user
         @pair = matcher.user.pair
         @code_value = matcher.code.value
