@@ -18,21 +18,25 @@ module PpwmMatcher
     end
 
     context "when given two users" do
-      let(:user1) { double("User", email: 'tim@example.com', github_login: 'timmy') }
-      let(:user2) { double("User", email: 'bob@example.com', github_login: 'bobby') }
+      let(:users) do
+        [ double("User", name: 'Tim Bower', email: 'tim@example.com', github_login: 'timmy') ,
+          double("User", name: 'Bob Timberland', email: 'bob@example.com', github_login: 'bobby') ]
+      end
 
       it "expects mail to be sent" do
-        mail_client.should_receive(:mail) do |opts|
-          opts[:to].should == user1.email
-          opts[:subject].should == "You've been paired up with bobby!"
-          opts[:body].should include("You can email them at bob@example.com")
+        users.permutation.each do |user, pair|
+          mail_client.should_receive(:mail) do |opts|
+            opts[:from].should == 'matcher@pairprogramwith.me'
+            opts[:reply_to].should == pair.email
+            opts[:to].should == user.email
+            opts[:subject].should == "You've been paired up with #{pair.github_login}!"
+            opts[:body].should include("Hi #{user.name},")
+            opts[:body].should include("You can email them at #{pair.email}")
+            opts[:body].should include("You've been paired up with #{pair.name}")
+          end
         end
-        mail_client.should_receive(:mail) do |opts|
-          opts[:to].should == user2.email
-          opts[:subject].should == "You've been paired up with timmy!"
-          opts[:body].should include("You can email them at tim@example.com")
-        end
-        mailer.users_assigned([user1, user2])
+
+        mailer.users_assigned(users)
       end
     end
   end
