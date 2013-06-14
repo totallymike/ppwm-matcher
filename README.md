@@ -47,7 +47,6 @@ Because:
 * anything else you can think of:
   * security
   * design
-  * letting you know when your 'pair' signed in
   * letting an admin view a list of paired users and codes
   * maybe leave messages for avdi in some queue...
   * add admin links (need to create an admin user, user roles) e.g. to create codes etc
