@@ -6,6 +6,7 @@ require 'ppwm_matcher/models/code'
 require 'ppwm_matcher/models/user'
 require 'ppwm_matcher/models/code_matcher'
 require 'ppwm_matcher/models/github_auth'
+require 'ppwm_matcher/observers/user_mailer'
 
 module PpwmMatcher
   class App < Sinatra::Base
