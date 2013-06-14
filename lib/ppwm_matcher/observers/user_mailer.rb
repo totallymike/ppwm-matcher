@@ -14,7 +14,8 @@ module PpwmMatcher
 
     private
     def mail_options(user, paired_user)
-      { :to      => user.email,
+      { :from    => 'matcher@pairprogramwith.me',
+        :to      => user.email,
         :subject => "You've been paired up with #{paired_user.github_login}!",
         :body    => mail_body(user, paired_user) }
     end
