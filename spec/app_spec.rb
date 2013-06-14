@@ -5,6 +5,7 @@ describe PpwmMatcher::App do
   include Sinatra::Auth::Github::Test::Helper
 
   let(:github_user) { make_user(:login => 'test_user') }
+  let(:unauthorized_text) {"We weren't able to authenticate you."}
 
   def app
     described_class.new
@@ -36,7 +37,7 @@ describe PpwmMatcher::App do
     it "displays authentication error" do
       get '/unauthenticated'
 
-      expect(last_response.body).to include("We weren't able to authenticate you.")
+      expect(last_response.body).to include(unauthorized_text)
     end
   end
 
@@ -116,7 +117,7 @@ describe PpwmMatcher::App do
     it "requires authorization" do
       get '/codes'
 
-      expect(last_response).not_to be_ok
+      expect(last_response.body).to include(unauthorized_text)
     end
 
     it "contains a listing of all codes" do

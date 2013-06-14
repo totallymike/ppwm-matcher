@@ -12,7 +12,7 @@ module PpwmMatcher
     enable :prefixed_redirects
     enable :logging
 
-    set :github_options, PpwmMatcher::GithubAuth.options
+    set :github_options, PpwmMatcher::GithubAuth.options.merge(:failure_app => self)
 
     configure do
       set :admin_username, ENV.fetch('ADMIN_USERNAME') { 'admin' }
