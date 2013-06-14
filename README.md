@@ -42,11 +42,9 @@ Because:
 
 **Check the [issues](https://github.com/rubyrogues/ppwm-matcher/issues) first!**
 
-* add pagination to code listing (/codes route) (see [issue #31]
-(https://github.com/rubyrogues/ppwm-matcher/issues/31))
+* add pagination to code listing (/codes route) (see [issue #31](https://github.com/rubyrogues/ppwm-matcher/issues/31))
 * fix deprecation warnings from github auth
-* Reuse Rails layout if mounted in Rails app (see [issue #15](https://github
-.com/rubyrogues/ppwm-matcher/issues/15))
+* Reuse Rails layout if mounted in Rails app (see [issue #15](https://github.com/rubyrogues/ppwm-matcher/issues/15))
 * anything else you can think of:
   * security
   * design
