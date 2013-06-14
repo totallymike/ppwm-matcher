@@ -22,5 +22,6 @@ FactoryGirl.define do
 
   factory :user, :class => PpwmMatcher::User do
     email { Faker::Internet.email }
+    name  { Faker::Name.name }
   end
 end

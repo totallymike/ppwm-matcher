@@ -2,7 +2,8 @@ module PpwmMatcher
   class User < ActiveRecord::Base
     self.table_name_prefix = "ppwm_matcher_"
 
-    attr_accessible :email, :code_id
+    attr_accessible :email, :code_id, :name, :gravatar_id
+
     belongs_to :code, validate: true
     validates :email, presence: true
 
@@ -27,7 +28,8 @@ module PpwmMatcher
     def self.update_or_create(email, github_user)
       user = where(:github_login => github_user.login).first_or_initialize(
         :gravatar_id   => github_user.gravatar_id,
-        :github_login  => github_user.login
+        :github_login  => github_user.login,
+        :name          => github_user.name
       )
       user.email = email
       user.save
