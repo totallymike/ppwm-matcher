@@ -14,9 +14,36 @@ module PpwmMatcher
 
     set :github_options, PpwmMatcher::GithubAuth.options.merge(:failure_app => self)
 
-    configure do
+    http_defaults = -> do
       set :admin_username, ENV.fetch('ADMIN_USERNAME') { 'admin' }
       set :admin_password, ENV.fetch('ADMIN_PASSWORD') { 'ZOMGSECRET' }
+    end
+
+    configure :test, :development do
+      http_defaults.call
+      Pony.options = {
+        :via => :smtp,
+        :via_options => {
+          :address => 'localhost',
+          :port => '1025'
+        }
+      }
+    end
+
+    configure :production do
+      http_defaults.call
+      Pony.options = {
+        :via => :smtp,
+        :via_options => {
+          :address => 'smtp.sendgrid.net',
+          :port => '587',
+          :domain => 'heroku.com',
+          :user_name => ENV['SENDGRID_USERNAME'],
+          :password => ENV['SENDGRID_PASSWORD'],
+          :authentication => :plain,
+          :enable_starttls_auto => true
+        }
+      }
     end
 
     register Sinatra::Auth::Github

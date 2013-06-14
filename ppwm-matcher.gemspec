@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'sinatra-activerecord'
   s.add_dependency 'pg'
   s.add_dependency 'rake'
+  s.add_dependency 'pony'
 
   s.add_development_dependency 'thin'
   s.add_development_dependency 'rspec'
@@ -22,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'database_cleaner'
+  s.add_development_dependency 'mailcatcher'
 
   s.add_development_dependency 'guard'
   s.add_development_dependency 'guard-bundler'
