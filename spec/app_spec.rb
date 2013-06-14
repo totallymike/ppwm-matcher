@@ -109,6 +109,15 @@ describe PpwmMatcher::App do
 
       expect(code.users(true).where(:email => github_user.email).size).to eql(1)
     end
+
+    it "adds UserMailer as an observer to the given code" do
+      code = FactoryGirl.create(:code)
+      login_as github_user
+
+      PpwmMatcher::UserMailer.should_receive(:new).and_call_original
+
+      post '/code', :code => code.value, :email => github_user.email
+    end
   end
 
   describe "GET /codes" do
