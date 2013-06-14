@@ -62,4 +62,25 @@ describe PpwmMatcher::Code do
       expect { code.assign_user(user) }.to change{ code.users(true).count }
     end
   end
+
+  context "after adding an observer" do
+    let(:code)     { PpwmMatcher::Code.new }
+    let(:observer) { double("observer", :users_assigned => true) }
+    before         { code.add_observer(observer) }
+    subject        { code.observers }
+
+    its(:length) { should == 1 }
+
+    context "calling #assign_user" do
+      let(:user1) { FactoryGirl.build(:user) }
+      let(:user2) { FactoryGirl.build(:user) }
+      before      { code.users << user1 }
+
+      it "should notify the observer" do
+        observer.should_receive(:users_assigned).with([user1, user2])
+        code.assign_user(user2)
+      end
+    end
+  end
+
 end
