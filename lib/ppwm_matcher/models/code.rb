@@ -7,13 +7,11 @@ module PpwmMatcher
     validate :cannot_have_more_than_two_users
 
     attr_accessible :value
+    attr_reader :observers
 
-    def cannot_have_more_than_two_users
-      if users(true).length > 2
-        add_error_already_paired
-      end
+    def add_observer(observer)
+      (@observers ||= Set.new) << observer
     end
-    private :cannot_have_more_than_two_users
 
     def add_error_already_paired
       errors.add(:base, "The code is already in use by a pair")
@@ -21,6 +19,7 @@ module PpwmMatcher
 
     def assign_user(user)
       users << user
+      notify_observers :users_assigned, users
     end
 
     def create_or_update
@@ -47,6 +46,18 @@ module PpwmMatcher
 
     def self.listing
       order(:value).includes(:users)
+    end
+
+    private
+
+    def cannot_have_more_than_two_users
+      if users(true).length > 2
+        add_error_already_paired
+      end
+    end
+
+    def notify_observers(message, *args)
+      observers && observers.each { |o| o.send(message, *args) }
     end
   end
 end
